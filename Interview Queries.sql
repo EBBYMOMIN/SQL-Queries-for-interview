@@ -225,17 +225,40 @@ WHERE rn = 1;
 SELECT * FROM Products
 WHERE Stocks = 0;
 
-7 --
+SELECT ProductID, ProductName, Stocks
+FROM Products WHERE Stocks = 0;
 
+-------with catgory-------
+SELECT p.ProductID, p.ProductName, c.CategoryName, p.Stocks
+FROM Products p
+JOIN Categories c ON c.CategoryID = p.CategoryID
+WHERE Stocks = 0;
 
-8 --
+7 -- Find customers who placed orders in last 30 days
+SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Phone
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderDate >= DATEADD(DAY,-30,GETDATE());
 
+8 -- Calculate the total number of orders placed each month.
+SELECT	YEAR(OrderDate) AS OrderYear,
+		MONTH(OrderDate) AS OrderMonth,
+		COUNT(OrderID) AS TotalOrders
+FROM Orders
+GROUP BY YEAR(OrderDate), MONTH(OrderDate)
+ORDER BY OrderYear, OrderMonth;
 
-9 --
+9 -- Retrieve the details of the most recent order.
+SELECT TOP 2 o.OrderID, o.OrderDate, o.TotalAmount, c.CustomerID, c.FirstName, c.LastName
+FROM Orders o
+JOIN Customers c ON o.CustomerID = c.CustomerID
+ORDER BY o.OrderDate DESC;
 
-
-10 --
-
+10 -- Find the average price of products in each category.
+SELECT c.CategoryID, c.CategoryName, AVG(p.Price) AS AveragePrice
+FROM Categories c
+JOIN Products p ON c.CategoryID = p.CategoryID
+GROUP BY c.CategoryID, c.CategoryName;
 
 11 --
 
