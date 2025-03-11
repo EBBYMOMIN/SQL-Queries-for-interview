@@ -28,19 +28,19 @@ D> WRITE QUERIES
 */
 /*
 ====================================================================================
-PROJECT START
+								PROJECT START
 ====================================================================================
 */
 
--- Create Database
+-- Create Database --
 CREATE DATABASE OnlineRetailDB;
 GO
 
--- Use the Database
+-- Use the Database --
 USE OnlineRetailDB;
 GO
 
--- Create the Customers table
+-- Create the Customers table --
 CREATE TABLE Customers(
 	CustomerID INT PRIMARY KEY IDENTITY(1,1),
 	FirstName NVARCHAR (50),
@@ -55,7 +55,7 @@ CREATE TABLE Customers(
 	CreatedAt DATETIME DEFAULT GETDATE()
 );
 
--- Create the Products table
+-- Create the Products table --
 CREATE TABLE Products (
 	ProductID INT PRIMARY KEY IDENTITY(1,1),
 	ProductName NVARCHAR (100),
@@ -65,15 +65,31 @@ CREATE TABLE Products (
 	CreatedAt DATETIME DEFAULT GETDATE()
 );
 
--- Create the Categories table
+-- Create the Categories table --
 CREATE TABLE Categories(
 	CategoryID INT PRIMARY KEY IDENTITY (1,1),
 	CategoryName NVARCHAR(100),
 	Description NVARCHAR (255)
 );
 
--- Create the Orders table
+-- Create the Orders table --
 CREATE TABLE Orders(
 	OrderID INT PRIMARY KEY IDENTITY(1,1),
-
+	CustomerID INT,
+	OrderDate DATETIME DEFAULT GETDATE(),
+	TotalAmount DECIMAL (10,2),
+	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) 
 );
+
+-- Create the OrderItems table --
+CREATE TABLE OrderItems(
+	OrderItemID INT PRIMARY KEY IDENTITY (1,1),
+	OrderID INT,
+	ProductID INT,
+	Quantity INT,
+	Price DECIMAL (10,2),
+	FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);
+
+-- 
