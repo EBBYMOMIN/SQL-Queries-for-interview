@@ -131,6 +131,7 @@ VALUES
 ('Car Phone Holder', 8, 12.99, 110),
 ('Organic Rice', 9, 9.99, 500),
 ('Silver Necklace', 10, 89.99, 40);
+('Keyboard', 1, 59.99, 0)
 
 -- Insert Sample data into Customers table
 INSERT INTO Customers (FirstName, LastName, Email, Phone, Address, City, State, Zipcode, Country)
@@ -220,8 +221,9 @@ SELECT CategoryID, CategoryName, TotalQuantitiesSold
 FROM CategorySales 
 WHERE rn = 1;
 
-6 --
-
+6 -- List all products that are out of stock
+SELECT * FROM Products
+WHERE Stocks = 0;
 
 7 --
 
