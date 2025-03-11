@@ -32,6 +32,12 @@ D> WRITE QUERIES
 ====================================================================================
 */
 
+/*
+====================================================================================
+								Insert Queries
+====================================================================================
+*/
+
 -- Create Database --
 CREATE DATABASE OnlineRetailDB;
 GO
@@ -170,26 +176,90 @@ VALUES
 (9, 11, 2, 25.99),  -- Yoga Mats for Order 9
 (10, 2, 1, 999.99); -- Laptop for Order 10
 
+/*
 ====================================================================================
 									Queries
 ====================================================================================
-1 --
-2 --
-3 --
-4 --
-5 --
+*/
+
+1 -- Retrieve all orders for a specific customer.
+SELECT o.OrderID, o.OrderDate, o.TotalAmount, oi.ProductID, p.ProductName, oi.Quantity, oi.Price
+FROM Orders o
+JOIN OrderItems oi ON o.OrderID = oi.OrderID
+JOIN Products p ON oi.ProductID = p.ProductID
+WHERE o.CustomerID = 1;
+
+2 -- Find the total sales for each product.
+SELECT p.ProductID, p.ProductName, SUM(oi.Quantity * oi.Price) AS TotalSales
+FROM OrderItems oi
+JOIN Products p
+ON oi.ProductID = p.ProductID
+GROUP BY p.ProductID, p.ProductName
+ORDER BY TotalSales DESC;
+
+3 -- Calculate the average order value.
+SELECT AVG(TotalAmount) AS AverageOrderValue FROM Orders
+
+4 --List the top 5 customers by total spending.
+SELECT TOP 5 c.CustomerID, c.FirstName, c.LastName, SUM(o.TotalAmount) AS TotalSpending
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.FirstName, c.LastName
+ORDER BY TotalSpending DESC
+
+5 -- Retrieve the most popular product category.
+WITH CategorySales AS (
+    SELECT c.CategoryID, c.CategoryName, SUM(oi.Quantity) AS TotalQuantitiesSold,
+    ROW_NUMBER() OVER (ORDER BY SUM(oi.Quantity) DESC) AS rn
+    FROM OrderItems oi
+    JOIN Products p ON oi.ProductID = p.ProductID
+    JOIN Categories c ON p.CategoryID = c.CategoryID
+    GROUP BY c.CategoryID, c.CategoryName
+)
+SELECT CategoryID, CategoryName, TotalQuantitiesSold 
+FROM CategorySales 
+WHERE rn = 1;
+
 6 --
+
+
 7 --
+
+
 8 --
+
+
 9 --
+
+
 10 --
+
+
 11 --
+
+
 12 --
+
+
 13 --
+
+
 14 --
+
+
 15 --
+
+
 16 --
+
+
 17 --
+
+
 18 --
+
+
 19 --
+
+
 20 --
