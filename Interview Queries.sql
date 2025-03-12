@@ -166,16 +166,7 @@ VALUES
 (7, GETDATE(), 299.99),
 (8, GETDATE(), 499.99),
 (9, GETDATE(), 79.99),
-(10, GETDATE(), 999.99),
-(12, GETDATE(), 849.98),
-(13, GETDATE(), 1299.99),
-(14, GETDATE(), 79.99),
-(15, GETDATE(), 349.99),
-(16, GETDATE(), 179.99),
-(17, GETDATE(), 259.99),
-(18, GETDATE(), 549.99),
-(19, GETDATE(), 299.99),
-(20, GETDATE(), 124.99);
+(10, GETDATE(), 999.99);
 
 -- Insert Sample data into OrderItems table
 INSERT INTO OrderItems(OrderID, ProductID, Quantity, Price)
@@ -340,4 +331,11 @@ JOIN Orders o ON c.CustomerID = o.CustomerID
 GROUP BY c.CustomerID, c.FirstName, c.LastName
 ORDER BY TotalSpending DESC;
 
-20 -- List orders with more than a specified number of items (eg. 5 items)
+20 -- List orders with more than a specified number of items (eg. 2 items)
+SELECT o.OrderID, c.CustomerID, c.FirstName, c.LastName, COUNT(oi.OrderItemID) AS NumberOfItems
+FROM Orders o
+JOIN OrderItems oi ON o.OrderID = oi.OrderID
+JOIN Customers c ON o.CustomerID = c.CustomerID
+GROUP BY o.OrderID, c.CustomerID, c.FirstName, c.LastName
+HAVING COUNT(oi.OrderItemID) = 2
+ORDER BY NumberOfItems;
