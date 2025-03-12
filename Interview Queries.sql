@@ -147,7 +147,12 @@ VALUES
 ('Suresh', 'Yadav', 'suresh.yadav@example.com', '+91-1098765432', '76 Gandhi Path', 'Jaipur', 'Rajasthan', '302001', 'India'),
 ('Neha', 'Malhotra', 'neha.malhotra@example.com', '+91-9876012345', '12 Civil Lines', 'Lucknow', 'Uttar Pradesh', '226001', 'India'),
 ('Amit', 'Kumar', 'amit.kumar@example.com', '+91-9875873210', '123 GG Road', 'Mumbai', 'Maharashtra', '400001', 'India'),
-('Arjun', 'Reddy', 'arjun.reddy@example.com', '+91-9876541234', '99 Jubilee Hills', 'Hyderabad', 'Telangana', '500034', 'India');
+('Arjun', 'Reddy', 'arjun.reddy@example.com', '+91-9876541234', '99 Jubilee Hills', 'Hyderabad', 'Telangana', '500034', 'India')('John', 'Doe', 'john.doe@example.com', '+1-555-1234567', '100 Main St', 'New York', 'NY', '10001', 'USA'),
+('Emma', 'Johnson', 'emma.johnson@example.com', '+1-555-2345678', '500 Market St', 'San Francisco', 'CA', '94105', 'USA'),
+('James', 'Smith', 'james.smith@example.co.uk', '+44-20-79460000', '15 Baker Street', 'London', '', 'W1U 3BW', 'UK'),
+('Olivia', 'Brown', 'olivia.brown@example.co.uk', '+44-161-3456789', '23 King Street', 'Manchester', '', 'M2 4LQ', 'UK'),
+('Liam', 'Wilson', 'liam.wilson@example.ca', '+1-416-9876543', '78 Queen St', 'Toronto', 'Ontario', 'M5V 2T6', 'Canada'),
+('Sophia', 'Martinez', 'sophia.martinez@example.ca', '+1-604-7654321', '212 Robson St', 'Vancouver', 'British Columbia', 'V6B 6P5', 'Canada');
 
 -- Insert Sample data into Orders table
 INSERT INTO Orders(CustomerID, OrderDate, TotalAmount)
@@ -161,7 +166,16 @@ VALUES
 (7, GETDATE(), 299.99),
 (8, GETDATE(), 499.99),
 (9, GETDATE(), 79.99),
-(10, GETDATE(), 999.99);
+(10, GETDATE(), 999.99),
+(12, GETDATE(), 849.98),
+(13, GETDATE(), 1299.99),
+(14, GETDATE(), 79.99),
+(15, GETDATE(), 349.99),
+(16, GETDATE(), 179.99),
+(17, GETDATE(), 259.99),
+(18, GETDATE(), 549.99),
+(19, GETDATE(), 299.99),
+(20, GETDATE(), 124.99);
 
 -- Insert Sample data into OrderItems table
 INSERT INTO OrderItems(OrderID, ProductID, Quantity, Price)
@@ -300,17 +314,24 @@ WHERE o.TotalAmount > 500
 ORDER BY o.TotalAmount DESC;
 
 16 -- List products along with the number of orders they appear in.
-SELECT p.ProductID, p.ProductName, SUM(OrderID) AS 'Total Orders'
+SELECT p.ProductID, p.ProductName, COUNT(oi.OrderID) AS 'Total Orders'
 FROM Products p
 JOIN OrderItems oi ON oi.ProductID = p.ProductID
 GROUP BY p.ProductID, p.ProductName
 ORDER BY 'Total Orders' DESC;
 
 17 -- Find the top 3 most frequently ordered products.
-
+SELECT TOP 3 p.ProductID, p.ProductName, COUNT(oi.OrderID) AS OrderCount
+FROM OrderItems oi
+JOIN Products p ON oi.ProductID = p.ProductID
+GROUP BY p.ProductID, p.ProductName
+ORDER BY OrderCount DESC;
 
 18 -- Calculate the total number of customers from each country.
-
+SELECT Country, COUNT(CustomerID) AS TotalCustomers
+FROM Customers
+GROUP BY Country
+ORDER BY TotalCustomers DESC;
 
 19 -- Retreive the list of customers along with their total spending.
 
