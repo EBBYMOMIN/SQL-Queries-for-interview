@@ -268,28 +268,51 @@ FROM Customers c
 FULL JOIN Orders o ON c.CustomerID = o.CustomerID
 WHERE o.OrderID IS NULL;
 
-12 -- 
+12 -- Retrieve the total quantities sold for each product.
+SELECT  p.ProductID, p.ProductName, SUM(oi.Quantity) AS TotalSales
+FROM Products p
+JOIN OrderItems oi ON p.ProductID = oi.ProductID
+GROUP BY p.ProductID, p.ProductName
+ORDER BY p.ProductName;
+
+13 -- Calculate the total revenue generated from each category.
+SELECT c.CategoryID, c.CategoryName AS Categories, SUM(oi.Quantity * oi.Price) AS TotalRevenue
+FROM Categories c
+JOIN Products p ON p.CategoryID = c.CategoryID
+JOIN OrderItems oi ON oi.ProductID = p.ProductID
+GROUP BY c.CategoryID, c.CategoryName
+ORDER BY TotalRevenue DESC;
+
+14 --Find the highest-priced product in each category.
+SELECT  c.CategoryName,c.CategoryID, p1.ProductID, p1.ProductName, p1.Price
+FROM Categories c
+JOIN Products p1 ON c.CategoryID = p1.CategoryID
+WHERE p1.Price = (SELECT MAX(Price)
+				  FROM Products p2
+				  WHERE p2.CategoryID = p1.CategoryID)
+ORDER BY p1.Price DESC;
+
+15 --Retrieve orders with a total amount greater than a specific value (e.g. $500)
+SELECT oi.OrderID, o.TotalAmount
+FROM OrderItems oi
+JOIN Orders o ON o.OrderID = oi.OrderID
+WHERE o.TotalAmount > 500
+ORDER BY o.TotalAmount DESC;
+
+16 -- List products along with the number of orders they appear in.
+SELECT p.ProductID, p.ProductName, SUM(OrderID) AS 'Total Orders'
+FROM Products p
+JOIN OrderItems oi ON oi.ProductID = p.ProductID
+GROUP BY p.ProductID, p.ProductName
+ORDER BY 'Total Orders' DESC;
+
+17 -- Find the top 3 most frequently ordered products.
 
 
-13 --
+18 -- Calculate the total number of customers from each country.
 
 
-14 --
+19 -- Retreive the list of customers along with their total spending.
 
 
-15 --
-
-
-16 --
-
-
-17 --
-
-
-18 --
-
-
-19 --
-
-
-20 --
+20 -- List orders with more than a specified number of items (eg. 5 items)
