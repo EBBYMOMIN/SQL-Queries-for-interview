@@ -145,7 +145,9 @@ VALUES
 ('Rohan', 'Kapoor', 'rohan.kapoor@example.com', '+91-3210987654', '90 MG Road', 'Chennai', 'Tamil Nadu', '600001', 'India'),
 ('Meera', 'Nair', 'meera.nair@example.com', '+91-2109876543', '33 Residency Road', 'Cochin', 'Kerala', '682001', 'India'),
 ('Suresh', 'Yadav', 'suresh.yadav@example.com', '+91-1098765432', '76 Gandhi Path', 'Jaipur', 'Rajasthan', '302001', 'India'),
-('Neha', 'Malhotra', 'neha.malhotra@example.com', '+91-9876012345', '12 Civil Lines', 'Lucknow', 'Uttar Pradesh', '226001', 'India');
+('Neha', 'Malhotra', 'neha.malhotra@example.com', '+91-9876012345', '12 Civil Lines', 'Lucknow', 'Uttar Pradesh', '226001', 'India'),
+('Amit', 'Kumar', 'amit.kumar@example.com', '+91-9875873210', '123 GG Road', 'Mumbai', 'Maharashtra', '400001', 'India'),
+('Arjun', 'Reddy', 'arjun.reddy@example.com', '+91-9876541234', '99 Jubilee Hills', 'Hyderabad', 'Telangana', '500034', 'India');
 
 -- Insert Sample data into Orders table
 INSERT INTO Orders(CustomerID, OrderDate, TotalAmount)
@@ -260,10 +262,13 @@ FROM Categories c
 JOIN Products p ON c.CategoryID = p.CategoryID
 GROUP BY c.CategoryID, c.CategoryName;
 
-11 --
+11 -- List customers who have never placed an order.
+SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Phone, o.OrderID, o.TotalAmount
+FROM Customers c
+FULL JOIN Orders o ON c.CustomerID = o.CustomerID
+WHERE o.OrderID IS NULL;
 
-
-12 --
+12 -- 
 
 
 13 --
